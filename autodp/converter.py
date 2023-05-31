@@ -92,7 +92,7 @@ def rdp_to_delta(rdp):
                         result = utils.stable_logsumexp_two(term_1 - np.log(x)- np.log(delta),0)
                         return min(result*1.0/(x - 1), bbghs)
 
-                results = minimize_scalar(fun, method='Brent', bracket=(1, 2), bounds=[1, 100000])
+                results = minimize_scalar(fun, method='Bounded', bracket=(1, 2), bounds=[1, 100000])
                 if results.success:
                    # print('delta', delta,'eps under rdp', results.fun)
                     return results.fun
@@ -146,7 +146,7 @@ def rdp_to_approxdp(rdp, alpha_max=np.inf, BBGHS_conversion=True):
                     else:
                         return np.log(1 / delta) / (x - 1) + rdp(x)
 
-            results = minimize_scalar(fun, method='Brent', bracket=(1,2), bounds=[1, alpha_max])
+            results = minimize_scalar(fun, method='Bounded', bracket=(1,2), bounds=[1, alpha_max])
             if results.success:
                 return results.fun
             else:
